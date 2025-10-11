@@ -1,6 +1,7 @@
 
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 import re
 from src.driver import Driver
 from injector import inject, singleton
@@ -14,12 +15,29 @@ class WebParser:
         self.driver = driver.driver
         self.cards = []
         
-        # 静态元素
-        self.el_turnOverWaste = self.driver.find_element(By.CSS_SELECTOR, ".turnOverWasteImage")
-        self.el_tableau = self.driver.find_elements(By.CSS_SELECTOR, '.tableauPileBase')
-        self.el_foundation = self.driver.find_elements(By.CSS_SELECTOR, '.foundationBase')
-        self.el_newgame = self.driver.find_element(By.CSS_SELECTOR, '.top-menu__btn')
-    
+    # 静态元素
+    @property
+    def el_turnOverWaste(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR, ".turnOverWasteImage")
+    @property
+    def el_foundation(self) -> WebElement:
+        return self.driver.find_elements(By.CSS_SELECTOR, '.foundationBase')
+    @property
+    def el_newgame(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR, '.top-menu__btn')
+    @property
+    def el_settings(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR,  "a.btn-modal[data-modal='#modal-settings']")
+    @property
+    def el_mode1card(self) -> WebElement:
+        return self.driver.find_element(By.XPATH, "//div[@id='modal-settings']//input[@name='solitr-cards-to-turn' and @value='1']/parent::span/parent::label")
+    @property
+    def el_mode3card(self) -> WebElement:
+        return self.driver.find_element(By.XPATH, "//div[@id='modal-settings']//input[@name='solitr-cards-to-turn' and @value='3']/parent::span/parent::label")
+    @property
+    def el_closeSettings(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR, '#modal-settings .modal-content__close')
+
     # 解析cards数据
     @property
     def cards_info(self) -> list[CardInfo]:

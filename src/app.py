@@ -19,6 +19,7 @@ class App:
         self.parser = parser
         self.actions = ActionChains(driver.driver)
 
+        self.mode = "3card"
         self.game_state = self.parser.parse_game()
 
     # --------------状态----------------
@@ -78,12 +79,31 @@ class App:
         self.actions.drag_and_drop(source=source, target=target).perform()
         self.game_state = self.parser.parse_game()
 
-    def new_game(self) -> None:
-        self.actions.click(self.parser.el_newgame).perform()
-        try:
-            WebDriverWait(self.driver, 2).until(EC.alert_is_present())
-            self.driver.switch_to.alert.accept()
-        except TimeoutException: pass
+    def new_game(self, mode: Literal[None, "1card", "3card"]=None) -> None:
+        if mode is None or self.mode == mode:
+            self.actions.click(self.parser.el_newgame).perform()
+            try:
+                WebDriverWait(self.driver, 1).until(EC.alert_is_present())
+                self.driver.switch_to.alert.accept()
+            except TimeoutException: pass
+        elif mode == "1card":
+            self.actions.click(self.parser.el_settings).perform()
+            self.actions.click(self.parser.el_mode1card).perform()
+            try:
+                WebDriverWait(self.driver, 1).until(EC.alert_is_present())
+                self.driver.switch_to.alert.accept()
+            except TimeoutException: pass
+            self.actions.click(self.parser.el_closeSettings).perform()
+            self.mode = mode
+        elif mode == "3card":
+            self.actions.click(self.parser.el_settings).perform()
+            self.actions.click(self.parser.el_mode3card).perform()
+            try:
+                WebDriverWait(self.driver, 1).until(EC.alert_is_present())
+                self.driver.switch_to.alert.accept()
+            except TimeoutException: pass
+            self.actions.click(self.parser.el_closeSettings).perform()
+            self.mode = mode
         self.game_state = self.parser.parse_game()
 
 # debug

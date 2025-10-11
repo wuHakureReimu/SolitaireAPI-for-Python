@@ -11,6 +11,7 @@ class Solution:
     def __init__(self, app: App):
         # 纸牌交互接口对象
         self.app = app
+        app.new_game(mode='1card')
 
     def demo(self) -> None:
         # 获取当前状态
@@ -27,22 +28,21 @@ class Solution:
         state = self.app.get_state()
         # 遍历stock堆，如果waste有A那就塞到foundation
         while len(state['stock']) > 0:
-            # 刷新waste，即从stock拿三张牌到waste上
+            # 刷新waste，即从stock拿1张牌到waste上
             self.app.refresh_waste()
             state = self.app.get_state()
-            if state['waste'][0]['code']['rank'] == 'A':
-                self.app.move(_from='waste', _to='foundation', _topile=3)
-                break
+            if state['waste']:
+                if state['waste'][0]['code']['rank'] == 'A':
+                    self.app.move(_from='waste', _to='foundation', _topile=3)
+                    break
     
     def new_game(self) -> None:
         # 开新一局
-        self.app.new_game()
+        self.app.new_game(mode='3card')
 
 if __name__ == "__main__":
     solution = global_injector.get(Solution)
     solution.demo()
+    solution.new_game()
+    solution.demo()
     input()
-    for i in range(3):
-        solution.new_game()
-        solution.demo()
-        input()
