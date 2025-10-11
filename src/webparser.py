@@ -20,8 +20,11 @@ class WebParser:
     def el_turnOverWaste(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR, ".turnOverWasteImage")
     @property
-    def el_foundation(self) -> WebElement:
+    def el_foundation(self) -> list[WebElement]:
         return self.driver.find_elements(By.CSS_SELECTOR, '.foundationBase')
+    @property
+    def el_tableau(self) -> list[WebElement]:
+        return self.driver.find_elements(By.CSS_SELECTOR, '.tableauPileBase')
     @property
     def el_newgame(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR, '.top-menu__btn')
