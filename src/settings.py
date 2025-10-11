@@ -7,6 +7,7 @@ from selenium.webdriver.remote.webelement import WebElement
 @singleton
 class Settings:
     url: str = "https://solitaire.online/zh"
+    mode: Literal["1card", "3card"] = "3card"
 
 @singleton
 class Mapping:
