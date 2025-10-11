@@ -76,7 +76,12 @@ class App:
                 if source_card['code']['rank'] != 'A': raise Exception(f"Source should be A! Except: {source_card['code']}")
                 target = self.parser.el_foundation[_topile]
 
-        self.actions.drag_and_drop(source=source, target=target).perform()
+        self.actions.move_to_element_with_offset(source, 0, -65)
+        self.actions.click_and_hold()
+        self.actions.move_to_element(target)
+        self.actions.release()
+        self.actions.perform()
+        # self.actions.drag_and_drop(source=source, target=target).perform()
         self.game_state = self.parser.parse_game()
 
     def new_game(self, mode: Literal[None, "1card", "3card"]=None) -> None:
