@@ -78,13 +78,16 @@ class App:
 
         self.actions.move_to_element_with_offset(source, 0, -65)
         self.actions.click_and_hold()
-        self.actions.move_to_element(target)
+        self.actions.move_to_element_with_offset(target, 0, -55)
         self.actions.release()
         self.actions.perform()
-        # self.actions.drag_and_drop(source=source, target=target).perform()
         self.game_state = self.parser.parse_game()
 
     def new_game(self, mode: Literal[None, "1card", "3card"]=None) -> None:
+        # 获胜时先关闭获胜窗口
+        if sum([len(p) for p in self.game_state['foundation']]) == 52:
+            self.actions.click(self.parser.el_closeWin).perform()
+
         if mode is None or self.mode == mode:
             self.actions.click(self.parser.el_newgame).perform()
             try:

@@ -40,7 +40,10 @@ class WebParser:
     @property
     def el_closeSettings(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR, '#modal-settings .modal-content__close')
-
+    @property
+    def el_closeWin(self) -> WebElement:
+        return self.driver.find_element(By.CSS_SELECTOR, "#modal-win .modal-content__close")
+    
     # 解析cards数据
     @property
     def cards_info(self) -> list[CardInfo]:
@@ -81,7 +84,7 @@ class WebParser:
         }
         for card in self.cards_info:
             left, top = card['pos']['left'], card['pos']['top']
-            if 268 <= top <= 500:  # Tableau区域
+            if 268 <= top:  # Tableau区域
                 if 30 <= left <= 153:  # 第1列
                     state['tableau'][0].append(card)
                 elif 159 <= left <= 282:  # 第2列
