@@ -43,7 +43,7 @@ class App:
         if _from == 'tableau':
             if self.game_state['tableau'][_frompile]:
                 source_card = self.game_state['tableau'][_frompile][_fromdepth]
-                if source_card['is_back']: raise Exception(f'Backfaced card cannot be dragged! Card: {source_card}')
+                # if source_card['is_back']: raise Exception(f'Backfaced card cannot be dragged! Card: {source_card}')
             else: raise Exception(f'Tableau pile{_frompile} is empty!')
         elif _from == 'waste':
             if self.game_state['waste']: source_card = self.game_state['waste'][0]
@@ -86,7 +86,12 @@ class App:
     def new_game(self, mode: Literal[None, "1card", "3card"]=None) -> None:
         # 获胜时先关闭获胜窗口
         if sum([len(p) for p in self.game_state['foundation']]) == 52:
-            self.actions.click(self.parser.el_closeWin).perform()
+            try:
+                close_button = WebDriverWait(self.driver, 1).until(
+                    EC.element_to_be_clickable(self.parser.el_closeWinLocater)
+                )
+                self.actions.click(close_button).perform()
+            except TimeoutException: pass
 
         if mode is None or self.mode == mode:
             self.actions.click(self.parser.el_newgame).perform()

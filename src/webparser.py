@@ -41,8 +41,8 @@ class WebParser:
     def el_closeSettings(self) -> WebElement:
         return self.driver.find_element(By.CSS_SELECTOR, '#modal-settings .modal-content__close')
     @property
-    def el_closeWin(self) -> WebElement:
-        return self.driver.find_element(By.CSS_SELECTOR, "#modal-win .modal-content__close")
+    def el_closeWinLocater(self):
+        return (By.CSS_SELECTOR, "#modal-win .modal-content__close")
     
     # 解析cards数据
     @property
